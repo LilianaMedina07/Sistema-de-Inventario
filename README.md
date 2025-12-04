@@ -106,6 +106,4 @@ http-server frontend -c-1
 
 Este proyecto se distribuye bajo la licencia MIT. Puedes ver el archivo `LICENSE` para más detalles.
 
-
-
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
