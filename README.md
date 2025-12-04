@@ -56,7 +56,7 @@ InventarioExpress** es un sistema web moderno diseñado para que pequeñas empre
 - **Docker** (para contenedorización opcional)
 - **GitHub Actions** (CI/CD)
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 INVENTARIOEXPRESS/                    
 ├── 📂 frontend/                      
 │   ├── 📄 index.html                 
