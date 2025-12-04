@@ -12,7 +12,6 @@ InventarioExpress** es un sistema web moderno diseñado para que pequeñas empre
 **Mantenedora:** Liliana
 
 ##  Características Principales
-
 ###  Gestión Completa
 - **Control de Inventario**: Agregar, actualizar y eliminar productos fácilmente
 - **Seguimiento de Ventas**: Registrar transacciones y actualizar niveles de stock automáticamente
@@ -34,7 +33,9 @@ InventarioExpress** es un sistema web moderno diseñado para que pequeñas empre
 - Conexión con **Microsoft SQL Server 2019** mediante scripts PowerShell
 - Backend opcional con Node.js/Express para API REST
 - Compatible con autenticación Windows (Trusted Connection)
-## 🛠️ Stack Tecnológico
+- 
+## Stack Tecnológico
+
 ### Frontend
 - **HTML5, CSS3, JavaScript (ES6+)**
 - **React + TypeScript** (opcional, en carpeta `client/`)
