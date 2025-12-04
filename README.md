@@ -2,7 +2,7 @@
 
 InventarioExpress es un sistema ligero de gestión de inventario pensado para pequeñas empresas. Proporciona un panel de control, autenticación, CRUD de productos, registro de movimientos (entradas/salidas) y conexión con Microsoft SQL Server 2019 mediante scripts PowerShell y/o un backend opcional.
 
-**Mantainer:** Liliana
+
 
 
 ## Características
@@ -100,7 +100,9 @@ http-server frontend -c-1
 2. Crea un branch: `feature/mi-cambio`.
 3. Envía un pull request con una descripción clara y pruebas.
 
----
+
+## Autor
+Liliana Nohemi Medina Rodriguez, 23380406. Ingenieria en Sistemas Computacionales. Maestro:Osvaldo Daniel Fernández Bonilla
 
 ## Licencia
 
