@@ -31,14 +31,12 @@ InventarioExpress** es un sistema web moderno diseñado para que pequeñas empre
 
 ###  Integración
 - Conexión con **Microsoft SQL Server 2019** mediante scripts PowerShell
-- Backend opcional con Node.js/Express para API REST
-- Compatible con autenticación Windows (Trusted Connection)
-- 
+- Compatible con autenticación Windows 
+  
 ## Stack Tecnológico
 
 ### Frontend
-- **HTML5, CSS3, JavaScript (ES6+)**
-- **React + TypeScript** (opcional, en carpeta `client/`)
+- HTML5, CSS3
 - Estilos modernos con CSS modular y componentes reutilizables
 
 ### Backend
@@ -47,14 +45,13 @@ InventarioExpress** es un sistema web moderno diseñado para que pequeñas empre
 - **JWT** para autenticación
 
 ### Base de Datos
-- **Microsoft SQL Server 2019** (SQLEXPRESS o completa)
+- **Microsoft SQL Server 2019** (SQLEXPRESS)
 - Scripts de migración y seeds incluidos
 
 ### Herramientas
 - **PowerShell 5.1+** con módulo SqlServer
 - **sqlcmd** para ejecución de scripts SQL
-- **Docker** (para contenedorización opcional)
-- **GitHub Actions** (CI/CD)
+
 
 ## Estructura del Proyecto
 INVENTARIOEXPRESS/                    
