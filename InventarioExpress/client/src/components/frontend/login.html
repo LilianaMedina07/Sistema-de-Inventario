@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - InventarioExpress</title>
+    <style>
+        /* ESTILOS COHERENTES CON ODOO */
+        :root {
+            --odoo-primary: #714B67;
+            --odoo-secondary: #00A09D;
+            --odoo-dark: #2C2C2C;
+            --odoo-light: #F8F9FA;
+            --odoo-gray: #6C757D;
+            --odoo-border: #E0E0E0;
+            --odoo-success: #28a745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--odoo-dark);
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 440px;
+        }
+        
+        /* LOGO SUPERIOR */
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo-compact {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--odoo-primary), var(--odoo-secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--odoo-dark);
+        }
+        
+        .logo-text span {
+            color: var(--odoo-primary);
+        }
+        
+        .login-title {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--odoo-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-subtitle {
+            color: var(--odoo-gray);
+            font-size: 1rem;
+        }
+        
+        /* FORMULARIO ESTILO ODOO */
+        .login-form {
+            background: white;
+            border: 1px solid var(--odoo-border);
+            border-radius: 8px;
+            padding: 2.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-section h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--odoo-gray);
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--odoo-dark);
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--odoo-border);
+            border-radius: 4px;
+            font-size: 1rem;
+            color: var(--odoo-dark);
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--odoo-primary);
+        }
+        
+        .form-input::placeholder {
+            color: #adb5bd;
+        }
+        
+        .form-hint {
+            font-size: 0.8rem;
+            color: var(--odoo-gray);
+            margin-top: 0.5rem;
+        }
+        
+        /* INFORMACIÓN DE ACCESO */
+        .access-info {
+            background: var(--odoo-light);
+            border: 1px solid var(--odoo-border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-left: 4px solid var(--odoo-primary);
+        }
+        
+        .access-info h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--odoo-gray);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .access-details {
+            font-size: 0.9rem;
+            color: var(--odoo-dark);
+        }
+        
+        .access-details p {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* BOTÓN PRINCIPAL */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--odoo-primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            background: #5d3d56;
+        }
+        
+        .submit-btn:disabled {
+            background: #adb5bd;
+            cursor: not-allowed;
+        }
+        
+        /* ENLACES Y FOOTER */
+        .login-links {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--odoo-border);
+        }
+        
+        .login-links a {
+            color: var(--odoo-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .terms {
+            font-size: 0.8rem;
+            color: var(--odoo-gray);
+            text-align: center;
+            margin-top: 1.5rem;
+            line-height: 1.4;
+        }
+        
+        .terms a {
+            color: var(--odoo-primary);
+            text-decoration: none;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .login-form {
+                padding: 2rem;
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- ENCABEZADO -->
+        <div class="login-header">
+            <div class="logo-compact">
+                <div class="logo-icon">IE</div>
+                <div class="logo-text">Inventario<span>Express</span></div>
+            </div>
+            
+            <h1 class="login-title">Acceso Administrativo</h1>
+            <p class="login-subtitle">
+                Sistema de gestión - Solo personal autorizado
+            </p>
+        </div>
+        
+        <!-- FORMULARIO -->
+        <div class="login-form">
+            <div class="form-section">
+                <h3>🔐 Credenciales de Administrador</h3>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label" for="email">
+                            Correo Electrónico
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            class="form-input" 
+                            value="admin@inventario.com"
+                            readonly
+                            style="background-color: #f8f9fa; cursor: not-allowed;"
+                        >
+                        <div class="form-hint">
+                            Cuenta de administrador predeterminada
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="password">
+                            Contraseña
+                        </label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="Ingresa la contraseña"
+                            required
+                            autofocus
+                        >
+                        <div class="form-hint">
+                            Ingresa la contraseña de administrador
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        🚀 Iniciar Sesión
+                    </button>
+                </form>
+            </div>
+            
+            <!-- INFORMACIÓN DE ACCESO -->
+            <div class="access-info">
+                <h3>
+                    <span>👑</span>
+                    Información de Acceso
+                </h3>
+                <div class="access-details">
+                    <p><strong>Correo:</strong> admin@inventario.com</p>
+                    <p><strong>Rol:</strong> Administrador Principal</p>
+                    <p><strong>Permisos:</strong> Acceso completo al sistema</p>
+                </div>
+            </div>
+            
+            <!-- ENLACES -->
+            <div class="login-links">
+                <a href="index.html">
+                    ← Volver a la página principal
+                </a>
+            </div>
+            
+            <!-- TÉRMINOS -->
+            <div class="terms">
+                Sistema de gestión empresarial - Versión 1.0
+                <div style="margin-top: 0.5rem;">
+                    © 2024 InventarioExpress. Uso restringido.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // SISTEMA DE LOGIN - SOLO ADMINISTRADOR
+        // ============================================
+        
+        // USUARIO VÁLIDO (SOLO ADMIN)
+        const ADMIN_USER = {
+            email: 'admin@inventario.com',
+            password: 'admin123', // Contraseña que debes ingresar
+            name: 'Administrador Principal',
+            role: 'admin',
+            avatar: '👑'
+        };
+
+        // CONFIGURAR EL FORMULARIO
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔐 Sistema de acceso - Modo Administrador');
+            
+            // El correo ya está predefinido y bloqueado
+            // El foco está en la contraseña automáticamente
+            document.getElementById('password').focus();
+            
+            // Configurar el envío del formulario
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                validateLogin();
+            });
+            
+            // Permitir Enter para enviar
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    validateLogin();
+                }
+            });
+        });
+
+        // VALIDAR EL LOGIN
+        function validateLogin() {
+            const passwordInput = document.getElementById('password');
+            const submitBtn = document.getElementById('submitBtn');
+            const password = passwordInput.value;
+            
+            // Validar que haya contraseña
+            if (!password.trim()) {
+                alert('❌ Por favor ingresa la contraseña');
+                passwordInput.focus();
+                return;
+            }
+            
+            // Cambiar estado del botón
+            submitBtn.innerHTML = '🔐 Verificando...';
+            submitBtn.disabled = true;
+            
+            // Simular verificación (como si fuera con servidor)
+            setTimeout(() => {
+                if (password === ADMIN_USER.password) {
+                    // ✅ CONTRASEÑA CORRECTA
+                    submitBtn.innerHTML = '✅ Acceso concedido';
+                    submitBtn.style.background = 'var(--odoo-success)';
+                    
+                    // Guardar sesión del usuario
+                    const userData = {
+                        email: ADMIN_USER.email,
+                        name: ADMIN_USER.name,
+                        role: ADMIN_USER.role,
+                        avatar: ADMIN_USER.avatar,
+                        loginTime: new Date().toLocaleString()
+                    };
+                    
+                    localStorage.setItem('inventario_user', JSON.stringify(userData));
+                    localStorage.setItem('inventario_token', 'token_' + Date.now());
+                    
+                    // Redirigir al dashboard después de 1 segundo
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                    
+                } else {
+                    // ❌ CONTRASEÑA INCORRECTA
+                    submitBtn.innerHTML = '❌ Contraseña incorrecta';
+                    submitBtn.style.background = '#dc3545';
+                    
+                    // Restaurar botón después de 2 segundos
+                    setTimeout(() => {
+                        submitBtn.innerHTML = '🚀 Iniciar Sesión';
+                        submitBtn.style.background = 'var(--odoo-primary)';
+                        submitBtn.disabled = false;
+                        
+                        // Limpiar campo y poner foco
+                        passwordInput.value = '';
+                        passwordInput.focus();
+                        
+                        // Mostrar ayuda
+                        alert('Contraseña incorrecta. Intenta nuevamente.\n\nContraseña correcta: admin123');
+                    }, 2000);
+                }
+            }, 800); // Simular tiempo de verificación
+        }
+
+        // FUNCIÓN PARA MOSTRAR/OCULTAR CONTRASEÑA (OPCIONAL)
+        // Si quieres agregar un botón de 👁️ para ver la contraseña:
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+        }
+
+        // Si quieres agregar el botón de mostrar contraseña, añade esto al HTML:
+        // <button type="button" onclick="togglePasswordVisibility()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">👁️</button>
+    </script>
+</body>
+</html>

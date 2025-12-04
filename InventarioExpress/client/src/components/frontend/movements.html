@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movimientos · InventarioExpress</title>
+  <style>
+    :root{--odoo-primary:#714B67;--odoo-dark:#2C2C2C;--odoo-light:#F8F9FA;--odoo-gray:#6C757D;--odoo-border:#E0E0E0}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;background:var(--odoo-light);color:var(--odoo-dark)}
+    .topbar{position:sticky;top:0;left:0;right:0;height:64px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--odoo-border);z-index:1000}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44;border-radius:8px;background:var(--odoo-primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .breadcrumb{font-size:14px;color:var(--odoo-gray)}
+    .top-actions{display:flex;gap:12px;align-items:center}
+    .icon-btn{background:transparent;border:0;padding:8px;border-radius:8px;cursor:pointer}
+
+    .sidebar{position:fixed;top:64px;left:0;bottom:0;width:220px;background:#fff;border-right:1px solid var(--odoo-border);padding-top:18px}
+    .sidebar ul{list-style:none;padding:0;margin:0}
+    .sidebar li{padding:12px 18px;display:flex;align-items:center;gap:12px;color:var(--odoo-dark);cursor:pointer}
+    .sidebar li:hover{background:linear-gradient(90deg, rgba(113,75,103,0.04), transparent)}
+    .sidebar .active{background:linear-gradient(90deg, rgba(113,75,103,0.08), transparent);font-weight:600}
+
+    .main{margin-left:220px;padding:88px 28px 60px}
+    .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .page-title{font-size:22px;font-weight:600}
+
+    .controls{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+    .search{padding:10px;border:1px solid var(--odoo-border);border-radius:8px;width:320px}
+    .filter{padding:8px;border:1px solid var(--odoo-border);border-radius:8px}
+    .btn-primary{background:var(--odoo-primary);color:white;padding:8px 12px;border-radius:8px;border:0;cursor:pointer}
+
+    .card{background:white;border-radius:10px;padding:12px;box-shadow:0 6px 18px rgba(16,24,40,0.04);margin-bottom:16px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid #f1f3f5;text-align:left;font-size:14px}
+    th{font-weight:700;color:var(--odoo-gray)}
+
+    .badge{padding:6px 8px;border-radius:999px;font-size:12px;color:white}
+    .in{background:#10b981}
+    .out{background:#ef4444}
+
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.35);display:none;align-items:center;justify-content:center;z-index:1200}
+    .modal{background:white;border-radius:10px;max-width:720px;width:100%;padding:18px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-control{width:100%;padding:8px;border:1px solid var(--odoo-border);border-radius:6px}
+    .full{grid-column:1/-1}
+
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+    .stat{background:white;padding:12px;border-radius:8px;text-align:center}
+
+    @media (max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}.sidebar{display:none}.main{margin-left:0;padding-top:100px}.form-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <div class="topbar">
+    <div class="brand"><div class="logo">IE</div><div class="breadcrumb">InventarioExpress — Movimientos</div></div>
+    <div class="top-actions">
+      <button class="icon-btn" id="notifBtn"><i class="fa-regular fa-bell"></i></button>
+      <button class="icon-btn" id="userBtn"><i class="fa-regular fa-user"></i></button>
+      <button class="btn-primary" id="logoutTop">Cerrar Sesión</button>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <ul>
+      <li><i class="fa-regular fa-chart-bar"></i> Dashboard</li>
+      <li><i class="fa-regular fa-box"></i> Productos</li>
+      <li class="active"><i class="fa-regular fa-right-left"></i> Movimientos</li>
+      <li><i class="fa-regular fa-cash-register"></i> Ventas</li>
+      <li><i class="fa-regular fa-cart-shopping"></i> Compras</li>
+      <li><i class="fa-regular fa-users"></i> Clientes</li>
+      <li><i class="fa-regular fa-building"></i> Proveedores</li>
+    </ul>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Control de Entradas y Salidas</div>
+        <div style="color:var(--odoo-gray);font-size:13px;margin-top:4px">Registrar compras, ventas y ajustes de inventario</div>
+      </div>
+      <div>
+        <button class="btn-primary" id="newMovementBtn"><i class="fa-solid fa-plus" style="margin-right:8px"></i> Nuevo movimiento</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <input id="searchInput" class="search" placeholder="Buscar producto o motivo..." />
+      <select id="filterProduct" class="filter"><option value="">Todos los productos</option></select>
+      <select id="filterType" class="filter"><option value="">Tipo</option><option value="Entrada">Entrada</option><option value="Salida">Salida</option></select>
+      <input id="dateFrom" type="date" class="filter" />
+      <input id="dateTo" type="date" class="filter" />
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat card"><div style="font-size:12px;color:var(--odoo-gray)">Entradas este mes</div><div id="statIn" style="font-size:18px;font-weight:700">0</div></div>
+      <div class="stat card"><div style="font-size:12px;color:var(--odoo-gray)">Salidas este mes</div><div id="statOut" style="font-size:18px;font-weight:700">0</div></div>
+      <div class="stat card"><div style="font-size:12px;color:var(--odoo-gray)">Producto más movido</div><div id="statTop" style="font-size:16px;font-weight:700">-</div></div>
+      <div class="stat card"><canvas id="miniChart" width="300" height="60"></canvas></div>
+    </div>
+
+    <div class="card">
+      <table id="movementsTable">
+        <thead>
+          <tr><th>Fecha</th><th>Tipo</th><th>Producto (ID)</th><th>Cantidad</th><th>Usuario</th><th>Stock resultante</th><th>Motivo / Observaciones</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h3 id="modalTitle">Nuevo movimiento</h3>
+      <form id="movementForm">
+        <div class="form-row">
+          <div>
+            <label>Tipo</label>
+            <select id="mType" class="form-control">
+              <option value="Entrada">Entrada (Compra)</option>
+              <option value="Salida">Salida (Venta)</option>
+            </select>
+          </div>
+          <div>
+            <label>Producto (buscar)</label>
+            <input id="mProductSearch" class="form-control" placeholder="Buscar producto..." />
+            <select id="mProduct" class="form-control" style="margin-top:8px"></select>
+          </div>
+          <div>
+            <label>Cantidad</label>
+            <input id="mQty" type="number" min="1" class="form-control" />
+          </div>
+          <div>
+            <label>Motivo</label>
+            <select id="mReason" class="form-control">
+              <option>Compra a proveedor</option>
+              <option>Venta a cliente</option>
+              <option>Ajuste</option>
+              <option>Daño</option>
+            </select>
+          </div>
+          <div class="full">
+            <label>Observaciones</label>
+            <textarea id="mNotes" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+          <button type="button" id="cancelBtn" class="icon-btn">Cancelar</button>
+          <button type="submit" class="btn-primary">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const userKeyCandidates = ['inventario_user','ie_user'];
+      const user = JSON.parse(localStorage.getItem(userKeyCandidates[0]) || localStorage.getItem(userKeyCandidates[1]) || 'null');
+      if(!user){ alert('Debes iniciar sesión'); window.location.href='login.html'; return; }
+
+      const productsKey = 'inventario_products';
+      const movementsKey = 'inventario_movements';
+
+      // Load products
+      let products = JSON.parse(localStorage.getItem(productsKey) || 'null') || [];
+      // ensure products array exists (if empty, seed minimal)
+      if(products.length===0){ products = [
+        { id:'P-1001', name:'Auriculares Bluetooth', category:'Electrónica', cost:15.00, price:29.99, stock:12, min:5, supplier:'Proveedor A' },
+        { id:'P-1002', name:'Camiseta Manga Corta', category:'Ropa', cost:5.00, price:12.50, stock:3, min:10, supplier:'Proveedor B' },
+        { id:'P-1003', name:'Leche Entera 1L', category:'Alimentos', cost:0.5, price:1.2, stock:0, min:10, supplier:'Proveedor C' }
+      ]; localStorage.setItem(productsKey, JSON.stringify(products)); }
+
+      // Load movements
+      let movements = JSON.parse(localStorage.getItem(movementsKey) || 'null');
+      if(!movements){ movements = [
+        { id:'M-2001', date: new Date().toISOString(), type:'Entrada', productId:'P-1001', productName:'Auriculares Bluetooth', qty:20, user:user.name||'Admin', reason:'Compra a proveedor', notes:'Stock inicial', stockAfter:32 },
+        { id:'M-2002', date: new Date().toISOString(), type:'Salida', productId:'P-1002', productName:'Camiseta Manga Corta', qty:2, user:user.name||'Admin', reason:'Venta a cliente', notes:'Venta local', stockAfter:1 }
+      ]; localStorage.setItem(movementsKey, JSON.stringify(movements)); }
+
+      // Elements
+      const tbody = document.querySelector('#movementsTable tbody');
+      const searchInput = document.getElementById('searchInput');
+      const filterProduct = document.getElementById('filterProduct');
+      const filterType = document.getElementById('filterType');
+      const dateFrom = document.getElementById('dateFrom');
+      const dateTo = document.getElementById('dateTo');
+
+      const modalBackdrop = document.getElementById('modalBackdrop');
+      const movementForm = document.getElementById('movementForm');
+      const mType = document.getElementById('mType');
+      const mProduct = document.getElementById('mProduct');
+      const mProductSearch = document.getElementById('mProductSearch');
+      const mQty = document.getElementById('mQty');
+      const mReason = document.getElementById('mReason');
+      const mNotes = document.getElementById('mNotes');
+
+      const statIn = document.getElementById('statIn');
+      const statOut = document.getElementById('statOut');
+      const statTop = document.getElementById('statTop');
+      const miniChart = document.getElementById('miniChart');
+
+      function saveState(){ localStorage.setItem(productsKey, JSON.stringify(products)); localStorage.setItem(movementsKey, JSON.stringify(movements)); }
+
+      function populateProductFilters(){
+        filterProduct.innerHTML = '<option value="">Todos los productos</option>';
+        mProduct.innerHTML = '';
+        products.forEach(p=>{ filterProduct.innerHTML += `<option value="${p.id}">${p.name} (${p.id})</option>`; mProduct.innerHTML += `<option value="${p.id}">${p.name} (${p.id})</option>`; });
+      }
+
+      function render(){
+        tbody.innerHTML = '';
+        const q = searchInput.value.trim().toLowerCase();
+        const pid = filterProduct.value;
+        const type = filterType.value;
+        const from = dateFrom.value? new Date(dateFrom.value) : null;
+        const to = dateTo.value? new Date(dateTo.value) : null;
+
+        movements.slice().reverse().filter(m=>{
+          if(q){ const hay = (m.productName||'').toLowerCase().includes(q) || (m.reason||'').toLowerCase().includes(q) || (m.notes||'').toLowerCase().includes(q); if(!hay) return false; }
+          if(pid && m.productId !== pid) return false;
+          if(type && m.type !== type) return false;
+          if(from && new Date(m.date) < from) return false;
+          if(to){ const end = new Date(to); end.setHours(23,59,59,999); if(new Date(m.date) > end) return false; }
+          return true;
+        }).forEach(m=>{
+          const tr = document.createElement('tr');
+          const qtyHtml = (m.type==='Entrada') ? `<span style="color:#10b981">+${m.qty}</span>` : `<span style="color:#ef4444">-${m.qty}</span>`;
+          tr.innerHTML = `
+            <td>${new Date(m.date).toLocaleString()}</td>
+            <td>${m.type}</td>
+            <td>${m.productName} <small style="color:var(--odoo-gray)">(${m.productId})</small></td>
+            <td>${qtyHtml}</td>
+            <td>${m.user}</td>
+            <td>${m.stockAfter}</td>
+            <td><strong>${m.reason}</strong><div style="color:var(--odoo-gray);font-size:13px">${m.notes||''}</div></td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        updateStats();
+      }
+
+      function updateStats(){
+        const now = new Date();
+        const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+        let inSum = 0, outSum = 0;
+        const counts = {};
+        const days = 14;
+        const dayCounts = Array(days).fill(0);
+
+        movements.forEach(m=>{
+          const d = new Date(m.date);
+          if(d >= firstDay){ if(m.type==='Entrada') inSum += m.qty; else outSum += m.qty; }
+          counts[m.productId] = (counts[m.productId]||0)+1;
+          const diff = Math.floor(( (new Date().setHours(0,0,0,0)) - (d.setHours(0,0,0,0)) ) / (1000*60*60*24));
+          if(diff >=0 && diff < days){ dayCounts[days-1-diff] += 1; }
+        });
+
+        statIn.textContent = inSum;
+        statOut.textContent = outSum;
+        let topId = null, topCount = 0;
+        Object.keys(counts).forEach(id=>{ if(counts[id] > topCount){ topCount = counts[id]; topId = id; }});
+        const topName = topId ? (products.find(p=>p.id===topId)?.name || topId) : '-';
+        statTop.textContent = topName + (topId? ` (${topCount})` : '');
+
+        const ctx = miniChart.getContext('2d'); ctx.clearRect(0,0,miniChart.width,miniChart.height);
+        const max = Math.max(1, ...dayCounts);
+        const w = miniChart.width / dayCounts.length;
+        dayCounts.forEach((v,i)=>{ const h = (v/max)*(miniChart.height-10); ctx.fillStyle = '#714B67'; ctx.fillRect(i*w+4, miniChart.height-h-4, w-6, h); });
+      }
+
+      function openModal(){ modalBackdrop.style.display='flex'; }
+      function closeModal(){ modalBackdrop.style.display='none'; movementForm.reset(); }
+
+      document.getElementById('newMovementBtn').addEventListener('click', ()=>{ mProductSearch.value=''; mProduct.selectedIndex=0; mQty.value=''; mNotes.value=''; mReason.value='Compra a proveedor'; mType.value='Entrada'; openModal(); });
+      document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+      mProductSearch.addEventListener('input', ()=>{
+        const q = mProductSearch.value.trim().toLowerCase();
+        Array.from(mProduct.options).forEach(opt=>{ opt.style.display = (q === '' || opt.text.toLowerCase().includes(q)) ? 'block' : 'none'; });
+      });
+
+      movementForm.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const type = mType.value; const pid = mProduct.value; const qty = parseInt(mQty.value)||0; const reason = mReason.value; const notes = mNotes.value;
+        if(!pid){ alert('Selecciona un producto'); return; }
+        if(qty <= 0){ alert('Cantidad debe ser mayor que 0'); return; }
+        const prod = products.find(p=>p.id===pid);
+        if(!prod){ alert('Producto no encontrado'); return; }
+        if(type==='Salida' && qty > prod.stock){ alert('Stock insuficiente para esta venta'); return; }
+
+        if(type==='Entrada'){ prod.stock = (prod.stock||0) + qty; }
+        else { prod.stock = (prod.stock||0) - qty; if(prod.stock < 0) prod.stock = 0; }
+
+        const mov = { id: 'M-'+(Math.floor(Math.random()*9000)+1000), date: new Date().toISOString(), type, productId: prod.id, productName: prod.name, qty, user: user.name||user.username||'Sistema', reason, notes, stockAfter: prod.stock };
+        movements.push(mov);
+        saveState(); populateProductFilters(); render(); closeModal();
+      });
+
+      [searchInput, filterProduct, filterType, dateFrom, dateTo].forEach(el=> el.addEventListener('input', render));
+
+      document.getElementById('logoutTop').addEventListener('click', ()=>{ if(confirm('Cerrar sesión?')){ localStorage.removeItem('inventario_user'); localStorage.removeItem('ie_user'); localStorage.removeItem('inventario_token'); localStorage.removeItem('ie_token'); window.location.href='login.html'; } });
+
+      populateProductFilters(); render();
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
+</body>
+</html>

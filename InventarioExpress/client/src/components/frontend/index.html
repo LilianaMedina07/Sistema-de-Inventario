@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InventarioExpress | Sistema de Gestión Todo-en-Uno</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ESTILOS TIPO ODOO - LIMPIO Y PROFESIONAL */
+        :root {
+            --odoo-primary: #714B67;
+            --odoo-secondary: #00A09D;
+            --odoo-dark: #2C2C2C;
+            --odoo-light: #F8F9FA;
+            --odoo-gray: #6C757D;
+            --odoo-border: #E0E0E0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', -apple-system, sans-serif;
+        }
+        
+        body {
+            color: var(--odoo-dark);
+            line-height: 1.6;
+            background: white;
+        }
+        
+        /* NAVBAR ODOO STYLE */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--odoo-border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--odoo-primary), var(--odoo-secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--odoo-dark);
+        }
+        
+        .logo-text span {
+            color: var(--odoo-primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--odoo-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--odoo-primary);
+        }
+        
+        .btn-outline {
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--odoo-border);
+            border-radius: 4px;
+            background: white;
+            color: var(--odoo-gray);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--odoo-primary);
+            color: var(--odoo-primary);
+        }
+        
+        .btn-primary {
+            padding: 0.5rem 1.5rem;
+            background: var(--odoo-primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #5d3d56;
+        }
+        
+        /* HERO SECTION ODOO STYLE */
+        .hero {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--odoo-border);
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            color: var(--odoo-dark);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero h1 strong {
+            font-weight: 700;
+            color: var(--odoo-primary);
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--odoo-gray);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .hero .btn-primary {
+            padding: 0.75rem 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .hero .btn-outline {
+            padding: 0.75rem 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* FEATURES ODOO STYLE */
+        .features {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--odoo-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--odoo-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border: 1px solid var(--odoo-border);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--odoo-primary), var(--odoo-secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--odoo-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card p {
+            color: var(--odoo-gray);
+            line-height: 1.6;
+        }
+        
+        /* CTA SECTION */
+        .cta {
+            background: linear-gradient(135deg, var(--odoo-primary), #5d3d56);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin: 4rem 0;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        
+        .cta p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .cta .btn-primary {
+            background: white;
+            color: var(--odoo-primary);
+            padding: 0.75rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .cta .btn-primary:hover {
+            background: #f8f9fa;
+        }
+        
+        /* TESTIMONIALS */
+        .testimonials {
+            padding: 4rem 2rem;
+            background: var(--odoo-light);
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid var(--odoo-border);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            color: var(--odoo-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--odoo-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .author-info h4 {
+            margin: 0;
+            color: var(--odoo-dark);
+        }
+        
+        .author-info p {
+            margin: 0;
+            color: var(--odoo-gray);
+            font-size: 0.9rem;
+        }
+        
+        /* FOOTER ODOO STYLE */
+        .footer {
+            background: var(--odoo-dark);
+            color: white;
+            padding: 3rem 2rem 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-column a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .features-grid, .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR TIPO ODOO -->
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">IE</div>
+            <div class="logo-text">Inventario<span>Express</span></div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="#features">Características</a>
+            <a href="#pricing">Precios</a>
+            <a href="#testimonials">Testimonios</a>
+            <a href="#faq">FAQ</a>
+            <a href="login.html" class="btn-outline">Iniciar Sesión</a>
+            <button class="btn-primary" onclick="window.location.href='login.html'">Comenzar Gratis</button>
+        </div>
+    </nav>
+    
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <h1>
+            El sistema de gestión <strong>todo-en-uno</strong><br>
+            para pequeños negocios
+        </h1>
+        <p>
+            Controla inventario, ventas, clientes y reportes con una plataforma intuitiva y poderosa.
+            Diseñada específicamente para negocios que buscan crecer de manera organizada.
+        </p>
+        
+        <div class="hero-buttons">
+            <button class="btn-primary" onclick="window.location.href='login.html'">
+                🚀 Probar Gratis
+            </button>
+            <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+                ▶ Ver Demo
+            </button>
+        </div>
+    </section>
+    
+    <!-- FEATURES SECTION -->
+    <section id="features" class="features">
+        <div class="section-title">
+            <h2>Gestiona todas las áreas de tu negocio</h2>
+            <p>Una plataforma integrada con todo lo que necesitas para operar eficientemente</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Gestión de Inventario</h3>
+                <p>
+                    Control de stock en tiempo real, alertas automáticas de reposición,
+                    seguimiento de productos y categorización inteligente.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Ventas y Facturación</h3>
+                <p>
+                    Procesa ventas rápidamente, genera facturas profesionales,
+                    calcula impuestos automáticamente y gestiona pagos.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>CRM Integrado</h3>
+                <p>
+                    Gestiona clientes y proveedores, historial de compras,
+                    seguimiento de interacciones y comunicación centralizada.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Reportes Avanzados</h3>
+                <p>
+                    Análisis detallados de ventas, inventario y rendimiento.
+                    Exporta a PDF, Excel y comparte reportes automáticamente.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Acceso Multiplataforma</h3>
+                <p>
+                    Trabaja desde cualquier dispositivo. Interfaz optimizada
+                    para escritorio, tablet y móvil. Sincronización en tiempo real.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Seguridad y Roles</h3>
+                <p>
+                    Control de acceso por roles, auditoría de cambios,
+                    respaldos automáticos y encriptación de datos sensibles.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA SECTION -->
+    <section class="cta">
+        <h2>¿Listo para transformar tu negocio?</h2>
+        <p>
+            Únete a miles de pequeños negocios que ya usan InventarioExpress
+            para automatizar sus procesos y crecer de manera inteligente.
+        </p>
+        <button class="btn-primary" onclick="window.location.href='login.html'">
+            Comenzar Prueba Gratuita
+        </button>
+    </section>
+    
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="testimonials">
+        <div class="section-title">
+            <h2>Lo que dicen nuestros usuarios</h2>
+            <p>Negocios reales, resultados reales</p>
+        </div>
+        
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-text">
+                    "Implementar InventarioExpress fue la mejor decisión para nuestro restaurante.
+                    Redujimos el desperdicio de alimentos en un 40% y mejoramos nuestro control de inventario significativamente."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">C</div>
+                    <div class="author-info">
+                        <h4>Carlos Mendoza</h4>
+                        <p>Dueño de "Sabor Casero"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-text">
+                    "Como tienda de ropa, mantener el control del inventario era un caos.
+                    Ahora sabemos exactamente qué tenemos, qué se vende y cuándo reabastecer."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">A</div>
+                    <div class="author-info">
+                        <h4>Ana Rivera</h4>
+                        <p>Propietaria de "Boutique Moda"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-text">
+                    "La facilidad para generar reportes y exportarlos nos ahorra horas cada semana.
+                    La curva de aprendizaje fue mínima y el soporte excelente."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">L</div>
+                    <div class="author-info">
+                        <h4>Luis Fernández</h4>
+                        <p>Gerente de Ferretería "El Tornillo"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>InventarioExpress</h3>
+                <p style="color: #adb5bd; line-height: 1.6; margin-top: 1rem;">
+                    La solución todo-en-uno para la gestión de pequeños negocios.
+                    Simple, poderosa y accesible.
+                </p>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Producto</h3>
+                <ul>
+                    <li><a href="#features">Características</a></li>
+                    <li><a href="#pricing">Precios</a></li>
+                    <li><a href="#">Demo</a></li>
+                    <li><a href="#">Actualizaciones</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Recursos</h3>
+                <ul>
+                    <li><a href="#">Documentación</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Tutoriales</a></li>
+                    <li><a href="#">Soporte</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Empresa</h3>
+                <ul>
+                    <li><a href="#">Nosotros</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#">Términos</a></li>
+                    <li><a href="#">Privacidad</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2024 InventarioExpress. Todos los derechos reservados.</p>
+            <p style="margin-top: 0.5rem;">
+                Desarrollado con ❤️ para pequeños negocios
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        // Scroll suave para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId !== '#') {
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Efecto sutil en el navbar al hacer scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
