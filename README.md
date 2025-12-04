@@ -1,5 +1,5 @@
 #  InventarioExpress
-Sistema de Gestión de Inventario para Pequeñas Empresas** - Aplicación web completa para control de stock, ventas, compras y reportes.
+Sistema de Gestión de Inventario para Pequeñas Empresas - Aplicación web completa para control de stock, ventas, compras y reportes.
 
 ![Estado](https://img.shields.io/badge/Estado-En%20Desarrollo-yellow)
 ![Tecnologías](https://img.shields.io/badge/Frontend-HTML%2FCSS%2FJS%2FReact-blue)
@@ -7,7 +7,7 @@ Sistema de Gestión de Inventario para Pequeñas Empresas** - Aplicación web co
 ![Base de Datos](https://img.shields.io/badge/BD-SQL%20Server%202019-red)
 
 
-InventarioExpress** es un sistema web moderno diseñado para que pequeñas empresas gestionen su inventario de manera eficiente, incluyendo ventas, compras, proveedores, clientes y generación de reportes en un entorno digital, intuitivo y seguro.
+InventarioExpress es un sistema web moderno diseñado para que pequeñas empresas gestionen su inventario de manera eficiente, incluyendo ventas, compras, proveedores, clientes y generación de reportes en un entorno digital, intuitivo y seguro.
 
 **Mantenedora:** Liliana
 
