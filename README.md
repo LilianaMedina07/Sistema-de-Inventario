@@ -1,5 +1,6 @@
 # InventarioExpress
-La contraseña del administrador es: admin123
+La contraseña del administrador es:       admin123
+link de la pagina       https://sistemadeinventario.great-site.net/?i=1 
 
 InventarioExpress es un sistema ligero de gestión de inventario pensado para pequeñas empresas. Proporciona un panel de control, autenticación, CRUD de productos, registro de movimientos (entradas/salidas) y conexión con Microsoft SQL Server 2019 mediante scripts PowerShell y/o un backend opcional.
 
